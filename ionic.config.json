@@ -1,0 +1,7 @@
+{
+  "name": "side-tabs-auth",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
