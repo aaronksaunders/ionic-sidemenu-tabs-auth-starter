@@ -9,17 +9,12 @@ import {
   IonButton,
 } from "@ionic/react";
 import React from "react";
-import { useParams, useHistory } from "react-router";
-import { useAuth } from "../pages/auth/authContext";
+// Auth
+import { RouteComponentProps } from "react-router";
+import { useAuth } from "./authContext";
 
-import ExploreContainer from "../components/ExploreContainer";
-import "./Page.css";
-
-const Page: React.FC = () => {
-  const { name } = useParams<{ name: string }>();
-  let { logOut } = useAuth()!;
-  const history = useHistory();
-
+const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
+  let { logIn } = useAuth()!;
   return (
     <IonPage>
       <IonHeader>
@@ -27,23 +22,22 @@ const Page: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>{name}</IonTitle>
+          <IonTitle>Login Page {""}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent>
-        <ExploreContainer name={name} />
         <IonButton
           onClick={async () => {
-            await logOut();
-            history.replace("/login");
+            await logIn();
+            history.replace("/tabs/account");
           }}
         >
-          LOGOUT
+          LOGIN
         </IonButton>
       </IonContent>
     </IonPage>
   );
 };
 
-export default Page;
+export default LoginPage;
