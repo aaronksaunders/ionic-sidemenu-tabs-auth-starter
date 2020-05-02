@@ -1,7 +1,12 @@
 import Menu from "./components/Menu";
 import Page from "./pages/Page";
-import React from "react";
-import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
+import React, { useEffect } from "react";
+import {
+  IonApp,
+  IonRouterOutlet,
+  IonSplitPane,
+  IonLoading,
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route } from "react-router-dom";
 
@@ -31,32 +36,48 @@ import LoginPage from "./pages/auth/LoginPage";
 import { useAuth } from "./pages/auth/authContext";
 
 const App: React.FC = () => {
-  const { authInfo } = useAuth()!;
+  const { authInfo, initialize } = useAuth()!;
 
-  return (
-    <IonApp>
-      <>
-        {authInfo?.loggedIn === true ? (
-          <IonReactRouter>
-            <IonSplitPane contentId="main">
-              <Menu />
-              <IonRouterOutlet id="main">
-                <Route path="/page/:name" component={Page} exact />
-                <Route path="/tabs" component={TabRootPage} />
-                <Redirect from="/" to="/tabs" exact />
-              </IonRouterOutlet>
-            </IonSplitPane>
-          </IonReactRouter>
-        ) : (
-          <IonReactRouter>
-            <Route path="/create-account" component={CreateAccountPage} exact />
-            <Route path="/login" component={LoginPage} exact />
-            <Redirect from="/" to="/login" exact />
-          </IonReactRouter>
-        )}
-      </>
-    </IonApp>
-  );
+  useEffect(() => {
+    (async () => await initialize())();
+  }, []);
+
+  if (!authInfo || !authInfo.initialized) {
+    return (
+      <IonApp>
+        <IonLoading isOpen={true} />
+      </IonApp>
+    );
+  } else {
+    return (
+      <IonApp>
+        <>
+          {authInfo?.loggedIn === true ? (
+            <IonReactRouter>
+              <IonSplitPane contentId="main">
+                <Menu />
+                <IonRouterOutlet id="main">
+                  <Route path="/page/:name" component={Page} exact />
+                  <Route path="/tabs" component={TabRootPage} />
+                  <Redirect from="/" to="/tabs" exact />
+                </IonRouterOutlet>
+              </IonSplitPane>
+            </IonReactRouter>
+          ) : (
+            <IonReactRouter>
+              <Route
+                path="/create-account"
+                component={CreateAccountPage}
+                exact
+              />
+              <Route path="/login" component={LoginPage} exact />
+              <Redirect from="/" to="/login" exact />
+            </IonReactRouter>
+          )}
+        </>
+      </IonApp>
+    );
+  }
 };
 
 export default App;
