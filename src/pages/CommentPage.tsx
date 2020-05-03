@@ -14,6 +14,7 @@ import {
   IonModal,
   IonTextarea,
   IonLabel,
+  IonToast,
 } from "@ionic/react";
 import React, { useState } from "react";
 
@@ -21,57 +22,48 @@ import { useQuery, useMutation, queryCache } from "react-query";
 import { useParams } from "react-router";
 import { addCircleOutline } from "ionicons/icons";
 
-const BASE_URL = "http://localhost:3000"
+import * as API from "../helpers/api";
 
 const CommentPage: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: "" });
 
   // call using queryKey and passing in the parameters
-  const { status, data, error } = useQuery(["comments", postId], async () => {
-    return new Promise(async (resolve) => {
-      let r = await fetch(`${BASE_URL}/posts/${postId}/comments`);
-      let data = await r.json();
-      setTimeout(() => resolve(data), 1000);
-    });
+  const { status, data, error } = useQuery(
+    ["comments", postId],
+    API.getAllComments
+  );
+
+  // call using queryKey and passing in the parameters
+  const [mutateAddComment] = useMutation(API.addComment, {
+    onSuccess: () => {
+      queryCache.refetchQueries("comments");
+    },
   });
 
-  // call using queryKey and passing in the parameters
-  const [mutateAddComment] = useMutation(
-    async ({ commentBody, postId }: any) => {
-      return await fetch(`${BASE_URL}/comments/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ body: commentBody, postId }),
-      });
+  //
+  const [mutateDeleteComment] = useMutation(API.deleteComment, {
+    onSuccess: () => {
+      queryCache.refetchQueries("comments");
     },
-    {
-      onSuccess: () => {
-        queryCache.refetchQueries("comments");
-      },
-    }
-  );
+  });
 
-  const [mutateDeleteComment] = useMutation(
-    async ({ commentId }: any) => {
-      return await fetch(`${BASE_URL}/comments/${commentId}`, {
-        method: "DELETE",
-      });
-    },
-    {
-      onSuccess: () => {
-        queryCache.refetchQueries("comments");
-      },
-    }
-  );
-
-  const deleteComment = async (id:string) => {
-    let resp = await mutateDeleteComment({commentId:id});
+  /**
+   *
+   * @param id
+   */
+  const deleteComment = async (id: string) => {
+    let resp = await mutateDeleteComment({ commentId: id });
+    setToast({ show: true, message: "Comment Deleted" });
     console.log(resp);
-  }
+  };
+
+  /**
+   *
+   * @param param0
+   */
   const onModalClose = async ({
     commentBody,
     cancel,
@@ -85,6 +77,7 @@ const CommentPage: React.FC = () => {
     setModalOpen(false);
 
     const data = await mutateAddComment({ commentBody, postId });
+    setToast({ show: true, message: "Comment Added" });
     console.log(data);
   };
 
@@ -113,14 +106,16 @@ const CommentPage: React.FC = () => {
         <IonModal isOpen={modalOpen}>
           <CommentModal onClose={onModalClose} />
         </IonModal>
+        {/* ION TOAST */}
+        <CommentToast
+          isOpen={toast.show}
+          onDidDismiss={() => setToast({ show: false, message: "" })}
+          message={toast.message}
+        />
         {data
           ? (data as Array<any>).map((d) => {
               return (
-                <CommentItem
-                  key={d.id}
-                  data={d}
-                  handleClick={deleteComment}
-                />
+                <CommentItem key={d.id} data={d} handleClick={deleteComment} />
               );
             })
           : null}
@@ -130,7 +125,36 @@ const CommentPage: React.FC = () => {
 };
 
 const CommentItem = ({ data, handleClick }: any) => {
-  return <IonItem onClick={()=>handleClick(data.id)}>{data.body} </IonItem>;
+  return <IonItem onClick={() => handleClick(data.id)}>{data.body} </IonItem>;
+};
+
+const CommentToast = ({
+  isOpen,
+  onDidDismiss,
+  message,
+}: {
+  isOpen: boolean;
+  onDidDismiss: any;
+  message: string;
+}) => {
+  return (
+    <IonToast
+      color="warning"
+      isOpen={isOpen}
+      onDidDismiss={onDidDismiss}
+      message={message}
+      position="bottom"
+      buttons={[
+        {
+          text: "Done",
+          role: "cancel",
+          handler: () => {
+            console.log("Cancel clicked");
+          },
+        },
+      ]}
+    />
+  );
 };
 
 const CommentModal = ({ onClose }: { onClose: any }) => {
