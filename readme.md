@@ -2,6 +2,7 @@
 
 # Sample Starter Using Side Menu, Tabs & Authentication Flow
 
+####  👉🏾 [Video Overview of Project On YouTube](https://www.youtube.com/watch?v=Es2Td9_UoZc) 📺
 
 - [React Context](https://reactjs.org/docs/context.html) For Managing Authentication State
 - [React-Query](https://github.com/tannerlinsley/react-query) For Managing Data State - ⚛️ Hooks for fetching, caching and updating asynchronous data in React
