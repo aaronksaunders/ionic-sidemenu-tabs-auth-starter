@@ -1,7 +1,7 @@
 ![https://raw.githubusercontent.com/aaronksaunders/ionic-sidemenu-tabs-auth-starter/master/ionic-react-cap.png](https://raw.githubusercontent.com/aaronksaunders/ionic-sidemenu-tabs-auth-starter/master/ionic-react-cap.png)
 
 # Sample Starter Using Side Menu, Tabs & Authentication Flow
--
+
 
 - [React Context](https://reactjs.org/docs/context.html) For Managing Authentication State
 - [React-Query](https://github.com/tannerlinsley/react-query) For Managing Data State
