@@ -2,7 +2,9 @@
 
 # Sample Starter Using Side Menu, Tabs & Authentication Flow
 
-####  👉🏾 [Video Overview of Project On YouTube](https://www.youtube.com/playlist?list=PL2PY2-9rsgl3aYbgV5Y_jFkCH7WWsiP-f) 📺
+####  👉🏾 [Video Overview of Project On YouTube](https://www.youtube.com/watch?v=Es2Td9_UoZc) 📺
+####  👉🏾 [Video Series - Learn To Build Mobile Apps with Ionic Framework & ReactJS Video Series](https://www.youtube.com/playlist?list=PL2PY2-9rsgl3aYbgV5Y_jFkCH7WWsiP-f) 📺
+
 
 - [React Context](https://reactjs.org/docs/context.html) For Managing Authentication State
 - [React-Query](https://github.com/tannerlinsley/react-query) For Managing Data State - ⚛️ Hooks for fetching, caching and updating asynchronous data in React
