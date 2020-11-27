@@ -24,9 +24,13 @@ const AccountTabPage: React.FC<PageProps> = ({ pageName }) => {
   const history = useHistory();
   const { status, data, error } = useQuery("todos", async () => {
     return new Promise(async (resolve, reject) => {
-      let r = await fetch("http://localhost:3000/posts");
-      let data = await r.json();
-      setTimeout(() => resolve(data), 1000);
+      try {
+        let r = await fetch("http://localhost:3000/posts");
+        let data = await r.json();
+        setTimeout(() => resolve(data), 1000);
+      } catch (e) {
+        alert("Error: Make Sure You Started the Server " + e.message);
+      }
     });
   });
   console.log("status", status);
@@ -73,4 +77,4 @@ const AccountItem = ({
   return <IonItem onClick={handleClick}>{data.title}</IonItem>;
 };
 
-export default AccountTabPage;
+export default React.memo(AccountTabPage);

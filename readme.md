@@ -10,6 +10,12 @@
 - [React-Query](https://github.com/tannerlinsley/react-query) For Managing Data State - ⚛️ Hooks for fetching, caching and updating asynchronous data in React
 - [JSON-Server](https://github.com/typicode/json-server) Quick Local Server to test Application
 
+### RUNNING SAMPLE
+- You must start the `json-server` database before running the app
+```
+npm run run:db
+```
+
 ### Ionic Components
 - IonTabs
 - IonToast

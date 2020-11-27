@@ -8,7 +8,7 @@ import {
   IonLoading,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -39,8 +39,8 @@ const App: React.FC = () => {
   const { authInfo, initialize } = useAuth()!;
 
   useEffect(() => {
-    (async () => await initialize())();
-  }, []);
+    !authInfo?.initialized && (async () => await initialize())();
+  },[authInfo, initialize]);
 
   if (!authInfo || !authInfo.initialized) {
     return (
@@ -57,9 +57,11 @@ const App: React.FC = () => {
               <IonSplitPane contentId="main">
                 <Menu />
                 <IonRouterOutlet id="main">
+                  <Switch>
                   <Route path="/page/:name" component={Page} exact />
                   <Route path="/tabs" component={TabRootPage} />
                   <Redirect from="/" to="/tabs" exact />
+                  </Switch>
                 </IonRouterOutlet>
               </IonSplitPane>
             </IonReactRouter>

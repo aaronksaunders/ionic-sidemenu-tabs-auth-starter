@@ -174,4 +174,4 @@ const CommentModal = ({ onClose }: { onClose: any }) => {
   );
 };
 
-export default CommentPage;
+export default React.memo(CommentPage);
