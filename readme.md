@@ -1,3 +1,4 @@
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W31U7HM)
 ![https://raw.githubusercontent.com/aaronksaunders/ionic-sidemenu-tabs-auth-starter/master/ionic-react-cap.png](https://raw.githubusercontent.com/aaronksaunders/ionic-sidemenu-tabs-auth-starter/master/ionic-react-cap.png)
 
 # Sample Starter Using Side Menu, Tabs & Authentication Flow
